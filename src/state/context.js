@@ -43,7 +43,7 @@ const createEthContractInstance = () => {
     try {
         const provider = new providers.Web3Provider(ethereum)
         const signer = provider.getSigner()
-        const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+        const contractAddress = process.env.REACT_APP_ADOPTION_CONTRACT_ADDRESS
 
         return new ethers.Contract(contractAddress, abi, signer)
     } catch (e) {
@@ -58,10 +58,7 @@ export const AppProvider = ({children}) => {
         if (ethereum) {
             try {
                 // Request account access
-                const accountData = await ethereum.request({method: "eth_requestAccounts"});
-
-                console.log("ACCOUNT DATA:", accountData)
-                return accountData
+                return await ethereum.request({method: "eth_requestAccounts"})
             } catch (error) {
                 // User denied account access...
                 console.error("User denied account access")
@@ -140,10 +137,7 @@ export const AppProvider = ({children}) => {
         try {
             const instance = createEthContractInstance()
 
-            const data = await instance.getAdopters()
-
-            console.log(data)
-
+            return await instance.getAdopters()
         } catch (e) {
             console.log("RETRIEVING:", e)
         }

@@ -1,12 +1,23 @@
 import './App.css';
 import AppContext from "./state/context";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 
 import PetsData from './pets.json'
 import {Toast} from "./components/toast";
 
+const empty_addr = '0x0000000000000000000000000000000000000000'
+
 function App() {
     const {adoptPet, showToast, retrieveAdopters} = useContext(AppContext)
+    const [adoptedPets, setAdoptedPets] = useState([])
+
+    useEffect(() => {
+        (async () => {
+            const data = await retrieveAdopters()
+
+            setAdoptedPets(data)
+        })()
+    }, [])
 
     return (
         <div className="App">
@@ -18,12 +29,8 @@ function App() {
 
             {showToast && (<Toast petName={'Gina'}/>)}
 
-            <button onClick={_ => retrieveAdopters()}>
-                Show Adopters
-            </button>
-
             <ul className="grid grid-cols-4 gap-10 mt-5 p-4">
-                {PetsData.map(({id, name, picture, age, breed, location}) => (
+                {PetsData.map(({id, name, picture, age, breed, location}, index) => (
                     <li key={id}>
                         <div style={{
                             border: '1px solid #00000',
@@ -50,9 +57,12 @@ function App() {
                                         </div>
 
                                         <br/>
+
                                         <button
                                             className="mb-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                            style={{ backgroundColor: adoptedPets[index] !== empty_addr && 'grey' }}
                                             onClick={_ => adoptPet(id)}
+                                            disabled={adoptedPets[index] !== empty_addr}
                                         >
                                             Adopt {name}
                                         </button>
