@@ -9,8 +9,6 @@ export const initialState = {
     dispatch: () => {
     },
     showToast: false,
-    createContract: () => {
-    },
     adoptPet: (id) => {
     },
     retrieveAdopters: (id) => {
@@ -67,7 +65,6 @@ export const AppProvider = ({children}) => {
             return
         }
 
-        // dispatch({type: 'INITIATE_WEB3', payload: {instance}})
         return new Web3(Web3.givenProvider || "ws://localhost:8545")
     }
 
@@ -76,13 +73,7 @@ export const AppProvider = ({children}) => {
             const instance = createEthContractInstance()
             const accountData = await instantiateWeb3()
 
-            const adoptPet = await instance.adopt(id, {
-                from: accountData[0]
-            })
-
-            console.log(
-                "ADOPT PET", adoptPet // 0x5FbDB2315678afecb367f032d93F642f64180aa3
-            )
+            await instance.adopt(id, {from: accountData[0]})
 
             dispatch({
                 type: 'SENT_TOAST', payload: {
@@ -103,35 +94,6 @@ export const AppProvider = ({children}) => {
             console.log("ERROR:", e)
         }
     }
-
-    // const adoptPet = async id => {
-    //     try {
-    //         const instance = createEthContractInstance()
-    //         const adoptPet = await instance.adopt(id)
-    //
-    //         console.log(
-    //             "ADOPT PET", adoptPet // 0x5FbDB2315678afecb367f032d93F642f64180aa3
-    //         )
-    //
-    //         dispatch({
-    //             type: 'SENT_TOAST', payload: {
-    //                 toastVisibility: true
-    //             }
-    //         })
-    //
-    //         // close success toast after 3s
-    //         setTimeout(() => {
-    //             dispatch({
-    //                 type: 'SENT_TOAST', payload: {
-    //                     toastVisibility: false
-    //                 }
-    //             })
-    //         }, 3000)
-    //
-    //     } catch (e) {
-    //         console.log("ERROR:", e)
-    //     }
-    // }
 
     const retrieveAdopters = async _ => {
         try {
