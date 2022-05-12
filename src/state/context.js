@@ -1,12 +1,9 @@
 import React, {useEffect, useReducer} from "react";
 
 export const initialState = {
-    isModalOpen: false,
     dispatch: () => {
     },
     showToast: false,
-    createContract: () => {
-    },
     adoptPet: (id) => {
     },
     retrieveAdopters: (id) => {
@@ -18,11 +15,6 @@ export default AppContext;
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case 'INITIATE_WEB3':
-            return {
-                ...state,
-                isModalOpen: action.payload,
-            }
         case 'SENT_TOAST':
             return {
                 ...state,
