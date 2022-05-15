@@ -1,0 +1,18 @@
+{
+  "site": {
+    "id": "ac912fca-f0e2-4ca7-a208-95e5afedf2a2",
+    "team": "2fafa53e-9cbe-4ceb-8e4f-5c7be6f319c7",
+    "platform": "ipfs",
+    "source": "ipfs",
+    "name": "still-lab-7470"
+  },
+  "build": {
+   "image": "node:alpine",
+   "command": "npm install && npm run build",
+   "publicDir": "build",
+   "baseDir": ".",
+   "environment": {
+     "REACT_APP_ADOPTION_CONTRACT": "0x91cfB3979B0769E0d49e5a238e8d7C5fFEb714cD"
+   }
+ }
+}

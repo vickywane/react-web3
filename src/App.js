@@ -13,9 +13,11 @@ function App() {
 
     useEffect(() => {
         (async () => {
-            const data = await retrieveAdopters()
-
-            setAdoptedPets(data)
+            try {
+                setAdoptedPets(retrieveAdopters())
+            } catch (e) {
+                console.log(e);
+            }
         })()
     }, [])
 

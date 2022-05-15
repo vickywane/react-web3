@@ -2,7 +2,15 @@ import React, {useEffect, useReducer} from "react";
 import Web3 from "web3";
 import {ethers, providers} from "ethers";
 
-const {abi} = require('../contracts/adoptionAbi.json')
+const {abi} = require('../contract-artifacts/contracts/Adoption.sol/Adoption.json')
+
+if (!abi) {
+    throw new Error("Adoptiom.json ABI file missing. Run npx hardhat run contracts/deploy-contract-script.js")
+}
+
+console.log("ALCHEMY URL:", process.env.REACT_APP_ALCHEMY_API_URL)
+console.log("PRIVATE KEY:",  process.env.REACT_APP_METAMASK_PRIVATE_KEY)
+console.log("ENV VARS:",  process.env)
 
 export const initialState = {
     isModalOpen: false,
@@ -41,7 +49,7 @@ const createEthContractInstance = () => {
     try {
         const provider = new providers.Web3Provider(ethereum)
         const signer = provider.getSigner()
-        const contractAddress = process.env.REACT_APP_ADOPTION_CONTRACT_ADDRESS
+        const contractAddress = process.env.REACT_APP_ADOPTION_CONTRACT
 
         return new ethers.Contract(contractAddress, abi, signer)
     } catch (e) {
